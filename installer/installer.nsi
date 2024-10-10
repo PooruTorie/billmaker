@@ -11,6 +11,8 @@ Section "Install"
 	SetOutPath $INSTDIR
 	File BillMaker.jar
 	File BillMaker.exe
+	File rechnung.docx
+	File quittung.docx
 
 	WriteUninstaller $INSTDIR\uninstall.exe
 
@@ -30,6 +32,8 @@ Section "Uninstall"
 	Delete $INSTDIR\BillMaker.jar
 	Delete $INSTDIR\BillMaker.exe
 	Delete $INSTDIR\uninstall.exe
+	Delete $INSTDIR\rechnung.docx
+	Delete $INSTDIR\quittung.docx
 	Delete $INSTDIR
 
 	Delete $LOCALAPPDATA\BillMaker\

@@ -1,5 +1,5 @@
 target
 .idea
 dependency-reduced-pom.xml
-.jar
-.exe
+installer/*.jar
+installer/*.exe

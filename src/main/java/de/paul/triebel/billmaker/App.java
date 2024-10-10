@@ -57,11 +57,14 @@ public class App extends Application {
         sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
         grid.add(sceneTitle, 0, 0, 2, 1);
 
+        CheckBox isInvoice = addCheckbox("Invoice:");
         TextField nameField = addTextField("Name:");
         TextField customerNumberField = addTextField("Customer Number:");
         TextField billNumberField = addTextField("Bill Number:");
         TextField taxNumberField = addTextField("Tax Number:");
+        TextField streetField = addTextField("Street:");
         TextField cityField = addTextField("City:");
+        TextField plzField = addTextField("PLZ:");
         TextField countryField = addTextField("Country:");
         DatePicker dateField = addDateField("Date:");
         dateField.setValue(LocalDate.now());
@@ -89,12 +92,20 @@ public class App extends Application {
             taxNumberField.pseudoClassStateChanged(ERROR_CLASS, check);
             checkPass &= !check;
 
+            check = streetField.getText().trim().isEmpty();
+            streetField.pseudoClassStateChanged(ERROR_CLASS, check);
+            checkPass &= !check;
+
             check = cityField.getText().trim().isEmpty();
             cityField.pseudoClassStateChanged(ERROR_CLASS, check);
             checkPass &= !check;
 
             check = countryField.getText().trim().isEmpty();
             countryField.pseudoClassStateChanged(ERROR_CLASS, check);
+            checkPass &= !check;
+
+            check = plzField.getText().trim().isEmpty();
+            plzField.pseudoClassStateChanged(ERROR_CLASS, check);
             checkPass &= !check;
 
             check = dateField.getValue() == null;
@@ -109,12 +120,16 @@ public class App extends Application {
             endBillDateField.pseudoClassStateChanged(ERROR_CLASS, check);
             checkPass &= !check;
 
+            String templateFile = isInvoice.isSelected() ? "quittung.docx" : "rechnung.docx";
+
             BillData data = new BillData();
             data.setName(nameField.getText());
             data.setCustomerNumber(customerNumberField.getText());
             data.setBillNumber(billNumberField.getText());
             data.setTaxNumber(taxNumberField.getText());
+            data.setStreet(streetField.getText());
             data.setCity(cityField.getText());
+            data.setPlz(plzField.getText());
             data.setCountry(countryField.getText());
             data.setDate(dateField.getValue());
             data.setStart(rangeDateField.getStartValue());
@@ -140,7 +155,7 @@ public class App extends Application {
 
                 if (file != null) {
                     try {
-                        Document doc = BillGenerator.generate(data);
+                        Document doc = BillGenerator.generate(data, templateFile);
                         doc.save(file.getAbsolutePath(), SaveFormat.PDF);
                         Desktop.getDesktop().open(file);
                     } catch (Exception ex) {
@@ -211,6 +226,16 @@ public class App extends Application {
         textFieldIndex++;
 
         return textField;
+    }
+
+    private CheckBox addCheckbox(String labelText) {
+        addLabel(labelText);
+
+        CheckBox checkbox = new CheckBox();
+        grid.add(checkbox, 1, textFieldIndex);
+        textFieldIndex++;
+
+        return checkbox;
     }
 
     private void addLabel(String labelText) {

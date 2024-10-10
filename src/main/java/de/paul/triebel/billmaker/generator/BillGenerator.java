@@ -4,8 +4,8 @@ import com.aspose.words.Document;
 import com.aspose.words.NodeType;
 import com.aspose.words.Row;
 import com.aspose.words.Table;
-import de.paul.triebel.billmaker.assets.Assets;
 
+import java.io.FileInputStream;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -14,8 +14,8 @@ import java.util.Collections;
 
 public class BillGenerator {
 
-    public static Document generate(BillData data) throws Exception {
-        Document doc = new Document(Assets.getFile("rechnung.docx"));
+    public static Document generate(BillData data, String templateFile) throws Exception {
+        Document doc = new Document(new FileInputStream(templateFile));
 
         NumberFormat priceFormatter = NumberFormat.getCurrencyInstance();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT);
@@ -24,8 +24,10 @@ public class BillGenerator {
         doc.getRange().replace("%NUMBER%", data.getCustomerNumber());
         doc.getRange().replace("%BILL%", data.getBillNumber());
         doc.getRange().replace("%TAX%", data.getTaxNumber());
+        doc.getRange().replace("%STREET%", data.getStreet());
         doc.getRange().replace("%CITY%", data.getCity());
         doc.getRange().replace("%COUNTRY%", data.getCountry());
+        doc.getRange().replace("%PLZ%", data.getPlz());
         doc.getRange().replace("%DATE%", data.getDate().format(dateFormatter));
         doc.getRange().replace("%START%", data.getStart().format(dateFormatter));
         doc.getRange().replace("%END%", data.getEnd().format(dateFormatter));

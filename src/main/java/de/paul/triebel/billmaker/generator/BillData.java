@@ -10,7 +10,9 @@ public class BillData {
     private String customerNumber;
     private String billNumber;
     private String taxNumber;
+    private String street;
     private String city;
+    private String plz;
     private String country;
     private LocalDate date;
     private LocalDate start;
@@ -99,6 +101,22 @@ public class BillData {
 
     public void setStart(LocalDate start) {
         this.start = start;
+    }
+
+    public String getPlz() {
+        return plz;
+    }
+
+    public void setPlz(String plz) {
+        this.plz = plz;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public float getSum() {
